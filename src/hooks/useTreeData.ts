@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { type TreeNode } from '../components/TreeView/types';
 import { simulateApiCall } from '../data/mockData';
 import { findNodeById, updateNodeById, addChildNode, deleteNodeById } from '../utils/treeutils';
+import { moveNodeToIndex } from '../utils/treeutils';
 
 
 export const useTreeData = (initialData: TreeNode[]) => {
@@ -28,6 +29,7 @@ export const useTreeData = (initialData: TreeNode[]) => {
             }));
         } catch (error) {
             updateTreeState(draft => updateNodeById(draft, nodeId, { isLoading: false }));
+            console.log(error)
         }
     }, [treeData, updateTreeState]);
 
@@ -65,6 +67,16 @@ export const useTreeData = (initialData: TreeNode[]) => {
     }, [updateTreeState]);
 
 
+    const moveNode = useCallback((
+        sourceId: string,
+        targetParentId: string | null,
+        targetIndex: number
+    ) => {
+        updateTreeState(draft => moveNodeToIndex(draft, sourceId, targetParentId, targetIndex));
+    }, [updateTreeState]);
+
+
+
     return {
         treeData,
         setTreeData,
@@ -74,6 +86,7 @@ export const useTreeData = (initialData: TreeNode[]) => {
         addNode,
         deleteNode,
         updateNodeName,
-        loadChildren
+        loadChildren,
+        moveNode
     };
 };

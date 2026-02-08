@@ -14,6 +14,13 @@ export type DragItem = {
   depth: number;
 };
 
+export type DropTarget = {
+  id: string;
+  parentId?: string;
+  index: number;
+  type: 'above' | 'below' | 'inside';
+};
+
 export type TreeViewProps = {
   data: TreeNode[];
   onNodeAdd?: (node: TreeNode, parentId?: string) => void;
